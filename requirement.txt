@@ -1,0 +1,4 @@
+Beautifulsoup4
+requests
+pandas
+pydialogflow-fulfillment
