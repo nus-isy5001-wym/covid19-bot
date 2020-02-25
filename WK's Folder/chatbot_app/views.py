@@ -49,7 +49,7 @@ def webhook(request):
             critical_ = pd_table['critical'].sum()
             new_case_ = pd_table['new_cases'].sum()
             new_death_ = pd_table['new_death'].sum()
-            
+
         #More info: https://github.com/Emmarex/dialogflow-fulfillment-python
         text1 = f'Currently, {country.capitalize()} has a total of {diagnose_:.0f} confirmed cases, + {new_case_:.0f} new case(s) from yesterday. There is total of {death_:.0f} death case(s), + {new_death_:.0f} new death case(s) from yesterday. \n\n{discharged_:.0f} people recovered from it, and {critical_:.0f} people still in critical condition. \n\n{LastUpdate}.'
         dialogflow_response = DialogflowResponse(text1)
