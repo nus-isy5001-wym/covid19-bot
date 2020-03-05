@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class globalStatus(models.Model):
-    country = models.CharField(max_length=50, blank=False)
+    country = models.CharField(max_length=50, blank=False, unique=True)
     diagnosed = models.IntegerField()
     new_cases = models.IntegerField()
     death = models.IntegerField()
@@ -16,3 +16,8 @@ class globalStatus(models.Model):
 
 class globalLastUpdate(models.Model):
     last_update = models.CharField(max_length= 100)
+
+class MOHHeadlines(models.Model):
+    news_title = models.CharField(max_length=100, blank=False)
+    news_link = models.URLField(unique = True)
+    news_date = models.DateField(null=True)

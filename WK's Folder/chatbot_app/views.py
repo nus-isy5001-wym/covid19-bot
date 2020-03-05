@@ -7,7 +7,7 @@ from pydialogflow_fulfillment.response import SimpleResponse, OutputContexts
 from bs4 import BeautifulSoup
 from requests import get
 import pandas as pd
-from chatbot_app.models import globalStatus, globalLastUpdate
+from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines
 
 
 # Create your views here.
@@ -26,7 +26,7 @@ def webhook(request):
     # --------------------------#
     # INFECTION STATUS INTENT   #
     # --------------------------#
-    if intent == "InfectionStatus":
+    if intent == "infection-status-covid":
         country = req.get('queryResult').get('parameters').get('country-defined')
         casestatus = req.get('queryResult').get('parameters').get('CaseStatus')
 
