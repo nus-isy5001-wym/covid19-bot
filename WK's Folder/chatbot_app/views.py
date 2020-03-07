@@ -52,9 +52,22 @@ def webhook(request):
 
         #More info: https://github.com/Emmarex/dialogflow-fulfillment-python
         text1 = f'Currently, {country.capitalize()} has a total of {diagnose_:.0f} confirmed cases, + {new_case_:.0f} new case(s) from yesterday. There is total of {death_:.0f} death case(s), + {new_death_:.0f} new death case(s) from yesterday. \n\n{discharged_:.0f} people recovered from it, and {critical_:.0f} people still in critical condition. \n\n{LastUpdate}.'
-        dialogflow_response = DialogflowResponse(text1)
-        reply = dialogflow_response.get_final_response()
-        
+   
+    # --------------------------#
+    # HEADLINE NEWS INTENT      #
+    # --------------------------#
+    if intent == "latest-news-covid":
+        news_list = list(MOHHeadlines.objects.order_by('news_date').values())
+        for news in news_list[-3:]: #top3
+            date_ = news['news_date'].strftime('%d %b, %Y')
+            title_ = news['news_title']
+            link_ = news['news_link']
+            text1 = f"{date_} \n{title_} \n{link_}\n\nFor more info: https://www.moh.gov.sg/covid-19"
+
+
+    dialogflow_response = DialogflowResponse(text1)
+    reply = dialogflow_response.get_final_response()
+
     # return generated response
     return HttpResponse(reply, content_type='application/json; charset=utf-8')
 
