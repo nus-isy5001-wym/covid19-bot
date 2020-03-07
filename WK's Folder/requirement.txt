@@ -1,3 +1,4 @@
+django==2.2.5
 Beautifulsoup4
 requests
 pandas
