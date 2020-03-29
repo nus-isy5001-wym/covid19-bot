@@ -49,6 +49,7 @@ def webhook(request):
             critical_ = pd_table[pd_table['country'] == country]['critical'].iloc[0]
             new_case_ = pd_table[pd_table['country'] == country]['new_cases'].iloc[0]
             new_death_ = pd_table[pd_table['country'] == country]['new_death'].iloc[0]
+            death_rate_ = pd_table[pd_table['country'] == country]['death_rate'].iloc[0]
             
         except:
             country = "Worldwide"
@@ -59,6 +60,7 @@ def webhook(request):
             critical_ = pd_table[pd_table['country'] == 'total:']['critical'].iloc[0]
             new_case_ = pd_table[pd_table['country'] == 'total:']['new_cases'].iloc[0]
             new_death_ = pd_table[pd_table['country'] == 'total:']['new_death'].iloc[0]
+            death_rate_ = pd_table[pd_table['country'] == country]['death_rate'].iloc[0]
 
         #More info: https://github.com/Emmarex/dialogflow-fulfillment-python
         text1 = f'Currently, {country.capitalize()} has a total of {diagnose_:.0f} confirmed cases, + {new_case_:.0f} new case(s) from yesterday. There is total of {death_:.0f} death case(s), + {new_death_:.0f} new death case(s) from yesterday. \n\n{discharged_:.0f} people recovered from it, and {critical_:.0f} people still in critical condition. \n\n{LastUpdate}.'

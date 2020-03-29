@@ -13,6 +13,7 @@ class globalStatus(models.Model):
     critical = models.IntegerField()
     created = models.DateTimeField(auto_now_add= True)
     updated = models.DateTimeField(auto_now=True)
+    death_rate = models.FloatField()
 
 class globalLastUpdate(models.Model):
     last_update = models.CharField(max_length= 100)

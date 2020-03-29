@@ -43,13 +43,22 @@ class statusScrapper():
                 except:
                     val = val
                 row.append(val)
+            
+            # Calculate death rate
+            if (row[3] == 0):
+                death_rate = 0.0
+            else:
+                death_rate = float("{0:.2f}".format(row[3] / row[1]))
+            row.append(death_rate)
+
+            # Append results
             res.append(row)
 
         col = ['country', 'diagnosed', 'new_cases', 'death',
             'new_death', 'discharged', 'active', 'critical','nonsense1','nonsense2','first_case']
         pd_table = pd.DataFrame(res, columns=col)
         global_dict = pd_table.to_dict('records')
-        model_instance = [globalStatus(country=i['country'], diagnosed=i['diagnosed'], new_cases=i['new_cases'], death=i['death'], new_death=i['new_death'], discharged=i['discharged'], critical=i['critical'], active=i['active']) for i in global_dict]
+        model_instance = [globalStatus(country=i['country'], diagnosed=i['diagnosed'], new_cases=i['new_cases'], death=i['death'], new_death=i['new_death'], discharged=i['discharged'], critical=i['critical'], active=i['active'], death_rate=i['death_rate']) for i in global_dict]
 
         try:
             globalStatus.objects.bulk_create(model_instance)
