@@ -1,4 +1,7 @@
 from django.db import models
+from datetime import datetime
+from chatbot_app.modules.storage import OverwriteStorage
+import os
 
 # Create your models here.
 
@@ -13,7 +16,6 @@ class globalStatus(models.Model):
     critical = models.IntegerField()
     created = models.DateTimeField(auto_now_add= True)
     updated = models.DateTimeField(auto_now=True)
-    death_rate = models.FloatField()
 
 class globalLastUpdate(models.Model):
     last_update = models.CharField(max_length= 100)
@@ -34,3 +36,35 @@ class hospitalList(models.Model):
     lat = models.FloatField()
     lng = models.FloatField()
     geocode_result = models.CharField(max_length = 5000)
+
+class diagnosisResponses(models.Model):
+    response = models.CharField(max_length=100, blank=False)
+
+class feedbackList(models.Model):
+    intent = models.CharField(max_length=100, blank=False)
+    first_name = models.CharField(max_length=100, blank=True)
+    telegram_user = models.CharField(max_length=100, blank=True)
+    session_ID = models.CharField(max_length=100, blank=False)
+    chat_ID = models.CharField(max_length=100)
+    rating = models.IntegerField()
+    question = models.CharField(max_length=10000)
+    answer = models.CharField(max_length=10000)
+    datetime = models.DateTimeField(auto_now = True)
+
+class userList(models.Model):
+    first_name = models.CharField(max_length=100, blank=True)
+    telegram_user = models.CharField(max_length=100, blank=True)
+    chat_ID = models.CharField(max_length=100,unique=True, blank=False)
+    
+class graphPlot(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+    plot = models.ImageField(upload_to ='plots/', storage=OverwriteStorage())
+    datetime = models.DateTimeField(auto_now = True)
+
+class userDiagnosis(models.Model):
+    first_name = models.CharField(max_length=100, blank=True)
+    chat_ID = models.CharField(max_length=100,unique=True, blank=False)
+    diagnosis_result = models.CharField(max_length=100, blank=False)
+    datetime = models.DateTimeField(auto_now = True)
+    check_in = models.BooleanField()
+    
