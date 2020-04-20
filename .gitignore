@@ -1,0 +1,4 @@
+# files to be ignored by git 
+
+.vscode/
+__pycache__/
