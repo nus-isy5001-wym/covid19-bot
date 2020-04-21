@@ -19,8 +19,10 @@
                     <th>Chat ID</th>
                     <th>Intent</th>
                     <th>Rating</th>
+                    <th>Triggered Intent</th>
                     <th>Question</th>
                     <th>Answer</th>
+                    <th>Date Time</th>
                 </thead>
                 {% for i in fb_table %}
                 <tr>
@@ -28,8 +30,10 @@
                     <td>{{i.chat_ID}}</td>
                     <td>{{i.intent}}</td>
                     <td>{{i.rating}}</td>
+                    <td>{{i.triggered_intent}}</td>
                     <td>{{i.question}}</td>
                     <td>{{i.answer}}</td>
+                    <td>{{i.datetime}}</td>
                 </tr>
                 {%endfor%}
             </table>
