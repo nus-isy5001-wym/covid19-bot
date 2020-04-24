@@ -8,8 +8,8 @@ import os
 class Dist2Hospital(Server):
     def __init__(self, request):
         super().__init__(request)
-        self.__key = key_ = os.environ['key_']
-        self.gmaps = googlemaps.Client(key = key_)
+        #self.__key = key_ = os.environ['key_']
+        #self.gmaps = googlemaps.Client(key = key_)
 
     def dist2hospital(self):
         address_ = super().rcvParam('address')
@@ -69,5 +69,4 @@ class Dist2Hospital(Server):
 
         self.main_text = f"Your location is {address_}, Singapore. Nearest {premise_} to you that I found is at {premise_query[solution].Name}. You are {distance_gmap:.1f}km away from it, it will take approximately {duration_gmap:.0f}min for you to reach there if you depart by car now."
         self.sub_text = f"Click link for instant direction: https://www.google.com/maps/dir/{str(address_.replace(' ','+'))+'+Singapore'}/{premise_query[solution].Name.replace(' ','+')}"
-        self.get_input = 1
-        return super().sendMsgs()
+        return super().sendMsg(get_fb=True, dual=True)
