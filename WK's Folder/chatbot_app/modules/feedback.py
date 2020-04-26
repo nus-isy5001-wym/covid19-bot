@@ -40,4 +40,23 @@ class Feedback(Server):
 
         return super().sendMsg(single=True)
 
-    
+    def store_text_fb(self):
+        intent = super().rcvIntent()
+        first_name = super().rcvUserData('first name')
+        session = super().rcvSession()
+        chat_ID = super().rcvUserData('id')
+        triggered_intent = super().rcvParam('triggered_intent')
+        answer = super().rcvParam('feedback-comment')
+       
+        if self.req.get('originalDetectIntentRequest').get('source') == "telegram":
+            dict = {'intent' : intent,
+                    'first_name' : first_name,
+                    'session_ID' : session,
+                    'chat_ID' : chat_ID,
+                    'triggered_intent' : triggered_intent,
+                    'answer' : answer,
+                    }
+            feedbackList.objects.create(**dict) #use ** to add dict into models
+        
+        self.main_text = "Got'cha. Will definitely pass the message! 😜"
+        return super().sendMsg(single=True)

@@ -73,6 +73,12 @@ class Feature(Server):
         # --------------------------#
         elif self.intent == "feedback-bad" or self.intent == "feedback-good":
             return self.fb.store_fb()
+
+        # --------------------------#
+        # FEEDBACK COMMENT          #
+        # --------------------------#
+        elif self.intent == "feedback":
+            return self.fb.store_text_fb()
         
         # --------------------------#
         # GOODBYE                   #
