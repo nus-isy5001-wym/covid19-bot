@@ -8,13 +8,14 @@ class Feedback(Server):
     
     def store_fb(self):
         intent = super().rcvIntent()
-        first_name = super().rcvUserData('first name')
+        first_name = super().rcvUserData('first_name')
         session = super().rcvSession()
         chat_ID = super().rcvUserData('id')
         rating = super().rcvParam('Rating')
         triggered_intent = super().rcvParam('triggered_intent')
         question = super().rcvParam('question')
         answer = super().rcvParam('answer')
+
 
         if rating == "👍":
             self.main_text = "Thank you for your input! ❤️"
@@ -42,10 +43,9 @@ class Feedback(Server):
 
     def store_text_fb(self):
         intent = super().rcvIntent()
-        first_name = super().rcvUserData('first name')
+        first_name = super().rcvUserData('first_name')
         session = super().rcvSession()
         chat_ID = super().rcvUserData('id')
-        triggered_intent = super().rcvParam('triggered_intent')
         answer = super().rcvParam('feedback-comment')
        
         if self.req.get('originalDetectIntentRequest').get('source') == "telegram":
@@ -53,7 +53,7 @@ class Feedback(Server):
                     'first_name' : first_name,
                     'session_ID' : session,
                     'chat_ID' : chat_ID,
-                    'triggered_intent' : triggered_intent,
+                    'rating' : -1,
                     'answer' : answer,
                     }
             feedbackList.objects.create(**dict) #use ** to add dict into models

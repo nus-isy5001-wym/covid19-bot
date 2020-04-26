@@ -42,7 +42,7 @@ class Server(object):
                 return str(data).split('.')[0]
         else:
             return None
-            
+
     def sendMsg(self, get_fb=False, single=False, dual=False, image=False):
         #for single response only
         ff_response = fulfillment_response() #create class

@@ -30,11 +30,11 @@ def webhook(request):
     # build a request object
 
 def user_list(request):
-    users = userList.objects.order_by('chat_ID')
+    users = userList.objects.order_by('datetime')
     user_dict = {'table' : users}
     return render(request, r'chat_bot_template/user_list.html', user_dict)
 
 def feedback_page(request):
-    feedback_item = feedbackList.objects.order_by('first_name')
+    feedback_item = feedbackList.objects.order_by('datetime')
     feedback_dict = {'fb_table' : feedback_item}
     return render(request, r'chat_bot_template/feedback_page.html', feedback_dict)
