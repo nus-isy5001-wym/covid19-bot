@@ -2,5 +2,3 @@
 
 .vscode/
 __pycache__/
-settings.py
-dist2hospital.py
