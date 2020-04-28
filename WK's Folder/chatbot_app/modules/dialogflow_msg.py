@@ -14,6 +14,7 @@ class Server(object):
     def __init__(self, request):
         self.req = json.loads(request.body)
         self.main_text = None
+        self.result = None
         self.sub_text = None
         self.img_url = None
 
@@ -43,7 +44,7 @@ class Server(object):
         else:
             return None
 
-    def sendMsg(self, get_fb=False, single=False, dual=False, image=False):
+    def sendMsg(self, get_fb=False, check_in=False, single=False, dual=False, image=False):
         #for single response only
         ff_response = fulfillment_response() #create class
         ff_text = ff_response.fulfillment_text(self.main_text) #insert ff text as first response, text only hence use fulfillment_text
@@ -88,6 +89,32 @@ class Server(object):
         else:
             ff_add = ff_response.fulfillment_messages(res_list)
             output = None
+
+        #######CheckIn#######
+        if check_in == True:
+            #create diagnosis card response
+            if self.result == 1:
+                title = "Would you like to assess yourself again after 2 days?"
+            elif self.result == 2:
+                title = "Do you want me to assess you again after 2 weeks?"
+            else:
+                sys.exit("queryID is not 0, 1, or 2, Check excel file database.")
+            buttons = [
+                ['Yes','👍'],
+                ['No' ,'👎']
+            ]
+            feedback_card = telegram.card_response(title, buttons)
+            res_list.append(feedback_card)
+            
+            ff_add = ff_response.fulfillment_messages(res_list)
+
+            #create context
+            session = self.req.get('session')
+            session_context = [
+                                ['checkin-followup', 1, {}]
+                            ]
+            #feedback-followup is input context for feedback. None for parameter
+            output = ff_response.output_contexts(session, session_context)
 
         reply = ff_response.main_response(fulfillment_text=ff_text, fulfillment_messages = ff_add, output_contexts=output)
         db.connections.close_all()

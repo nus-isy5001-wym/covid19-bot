@@ -8,6 +8,7 @@ from chatbot_app.modules.cbot_response import CbotResponse
 from chatbot_app.modules.users_database import UserDB
 from chatbot_app.modules.webscrape import Webscrape
 from chatbot_app.modules.generate_graph import Gen_graph
+from chatbot_app.modules.notification import Notification
 
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
 
@@ -23,6 +24,7 @@ class Feature(Server):
         self.udb = UserDB(request)
         self.wbs = Webscrape()
         self.gg = Gen_graph()
+        self.ntf = Notification()
 
         self.intent = super().rcvIntent()
         self.udb.storeId()
@@ -93,3 +95,18 @@ class Feature(Server):
             return self.udb.subscribe()
         elif self.intent == "unsubscribe":
             return self.udb.unsubscribe()
+
+        # --------------------------#
+        # CHECKIN AFTER ASSESSMENT  #
+        # --------------------------#
+        elif self.intent == "checkin-yes" or self.intent == "checkin-no":
+            return self.udb.checkin()
+
+        # --------------------------#
+        # CHECKIN NOTIFICATION      #
+        # --------------------------#
+        elif self.intent == "checkin-notification":
+            self.ntf.send_checkin_days()
+            self.main_text = "Notification sent!"
+            return super().sendMsg(single=True)
+
