@@ -1,5 +1,5 @@
 from chatbot_app.modules.dialogflow_msg import Server
-from chatbot_app.models import userList, userDiagnosis
+from chatbot_app.models import userList
 
 class UserDB(Server):
     def __init__(self, request):
@@ -14,8 +14,7 @@ class UserDB(Server):
         try:
             userList.objects.create(**dict) #use ** to add dict into models
             print('New user added.')
-        except Exception as e: 
-            print('Error: '+str(e))
+        except:
             print('User already exist. Skip')
     
     def subscribe(self):
@@ -27,29 +26,4 @@ class UserDB(Server):
     def unsubscribe(self):
         userList.objects.filter(chat_ID=self.chat_ID).update(subscribe=False)
         self.main_text = f"No prob, {self.first_name}! If you want to subscribe to our announcement, just click here /subscribe ❤️"
-        return super().sendMsg(get_fb=True, single=True)
-
-    def checkin(self):
-        period = None
-        checkin = super().rcvParam('Rating')
-        # update user checkin in database
-        result = userDiagnosis.objects.get(chat_ID=self.chat_ID).diagnosis_result
-        #print("result: {}".format(result))
-        if result == '2':
-            period = 'weeks'
-        elif result == '1':
-            period = 'days'
-
-        if checkin == "👍":
-            #print("chatID: " + str(self.chat_ID))
-            userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(check_in=True)
-            self.main_text = "Ok! I will remind you again, so please check for notification after 2 "+ str(period) + " :D"
-            
-        elif checkin == "👎":
-            userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(check_in=False)
-            self.main_text = "Understood. Do ask me again for self assessment anytime :)"
-
-        else:
-            self.main_text = "I don't understand. Please select either yes button or no button! 😁"
-
         return super().sendMsg(get_fb=True, single=True)
