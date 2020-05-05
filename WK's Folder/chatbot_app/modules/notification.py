@@ -1,52 +1,21 @@
-import django, os
-os.environ.setdefault('DJANGO_SETTING_MODULE', 'ChatBot_Main.settings')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
-django.setup()
 from chatbot_app.models import userDiagnosis
-from django.utils import timezone
-import requests, json, time, datetime, pytz
+import requests, json
 
 class Notification():
     def __init__(self):
-        pass
+        pass 
 
-    def checkin_date(self, period):
-        print('Start Daemon Process: Checkin Notification.')
-        while True:
-            #print("Checkin Notification ID: " + str(os.getpid()))
-            self.d_users = list(userDiagnosis.objects.all().values())
-            for user in self.d_users:
-                recorded_dt = user['datetime']
-                diag_result = user['diagnosis_result']
-                checkin = user['check_in']
-                chat_id = user['chat_ID']
-                current_dt = timezone.now()
-                notify_dt = None
-                #print("checkin: " + str(checkin))
-                #print("diag: " + str(diag_result))
-                #print("record : " + str(recorded_dt))
-                #print("current: " + str(current_dt))
-                if diag_result == '1':
-                    notify_dt = recorded_dt + datetime.timedelta(seconds=10)
-                    #notify_dt = recorded_dt + datetime.timedelta(days=2)
-                elif diag_result == '2':
-                    notify_dt = recorded_dt + datetime.timedelta(seconds=20)
-                    #notify_dt = recorded_dt + datetime.timedelta(days=14)
-                else:
-                    print("diag_result is not either 1 or 2.")
-                    continue
+    def send_checkin_days(self):
+        d_users = list(userDiagnosis.objects.all().values())
+        #print(d_users)
+        d_user = d_users[0]
+        # use this to control the notification sending
+        chat_id = d_user['chat_ID']
+        datetime = d_user['datetime']
+        diag_result = d_user['diagnosis_result']
+        checkin = d_user['check_in']
 
-                if notify_dt < current_dt and checkin == True:
-                    self.send_checkin(chat_id)
-                    #reset checkin to avoid resending
-                    userDiagnosis.objects.filter(chat_ID=chat_id).update(check_in=False)
-                    print("Sent Notification for checkin user!!")
-            time.sleep(period)
-
-    def send_checkin(self, chat_id):
-        # test bot
         #token = "1287227674:AAEFQgu9XUwFQUwgINQzyJJWq-0pLz9IYdU"
-        # hiroku bot
         token = "855364779:AAEMZZgLu9qzhhoWhiiz5f84QJ5CJn29Uho"
         text = "Would you like to do self assessment on COVID19?"
         reply_markup =  {"inline_keyboard": [[{"text": "Self Assessment","callback_data": "Self Assessment"}],[{"text": "Nope","callback_data" : "Nope"}]]}
@@ -56,6 +25,10 @@ class Notification():
         req = requests.post(url, data = data)
         res = req.json()
         print(res)
+
+    def send_checkin_weeks(self):
+        # same as the fucntion above, just different in period of time to send the notification
+        pass
         
 '''
 https://api.telegram.org/bot1287227674:AAEFQgu9XUwFQUwgINQzyJJWq-0pLz9IYdU/sendMessage

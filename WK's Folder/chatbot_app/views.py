@@ -6,7 +6,8 @@ import os
 
 from chatbot_app.modules.features import Feature
 from chatbot_app.models import feedbackList, userList, graphPlot
-from chatbot_app.modules import multips
+
+# Create your views here.
 
 def index(request):
     image_obj = graphPlot.objects.order_by('name')
@@ -23,7 +24,6 @@ def index(request):
 @csrf_exempt
 def webhook(request):
     # run Feature library
-    print("Process ID for webhook: " + str(os.getpid()))
     feature = Feature(request)
     # start backend function
     return feature.main()

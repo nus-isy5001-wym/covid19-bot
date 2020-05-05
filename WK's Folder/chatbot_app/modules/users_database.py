@@ -1,6 +1,5 @@
 from chatbot_app.modules.dialogflow_msg import Server
 from chatbot_app.models import userList, userDiagnosis
-from django.utils import timezone
 
 class UserDB(Server):
     def __init__(self, request):
@@ -43,7 +42,7 @@ class UserDB(Server):
 
         if checkin == "👍":
             #print("chatID: " + str(self.chat_ID))
-            userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(check_in=True, datetime=timezone.now())
+            userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(check_in=True)
             self.main_text = "Ok! I will remind you again, so please check for notification after 2 "+ str(period) + " :D"
             
         elif checkin == "👎":
